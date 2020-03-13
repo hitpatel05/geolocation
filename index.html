@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Showing User's Location on Google Map</title>
+<script src="https://code.jquery.com/jquery-3.0.0.js"></script>
+<script type="text/javascript">
+var i = 0;
+var map;
+function initMap() {
+var mapCenter = new google.maps.LatLng(47.6145, -122.3418); //Google map Coordinates
+map = new google.maps.Map($("#map")[0], {
+		center: mapCenter,
+		zoom: 8
+	  });
+}
+function callmsg() {
+	setTimeout(function(){ 
+		 callmap(); 
+		 callmsg();
+	}, 1000);
+
+}
+function callmap() {
+	document.getElementById("loge").innerHTML = document.getElementById("loge").innerHTML + '<br/> Call showPosition - ' + i;
+	console.log('Call showPosition - ' + i);
+    i += 1;
+	if ("geolocation" in navigator){
+			navigator.geolocation.getCurrentPosition(function(position){ 
+					<!-- infoWindow = new google.maps.InfoWindow({map: map}); -->
+					<!-- var pos = {lat: position.coords.latitude, lng: position.coords.longitude}; -->
+					<!-- infoWindow.setPosition(pos); -->
+					<!-- infoWindow.setContent("Found your location <br />Lat : "+position.coords.latitude+" </br>Lang :"+ position.coords.longitude); -->
+					<!-- map.panTo(pos); -->
+					var positionInfo = "Your current position is - " + i + " (" + "Latitude: " + position.coords.latitude + ", " + "Longitude: " + position.coords.longitude + ")";
+					document.getElementById("result").innerHTML = positionInfo;
+				});
+		}else{
+			console.log("Browser doesn't support geolocation!");
+	}
+}
+</script>
+<!-- <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBGgA9HqC9KjPlL1JvuZ_5sKyGQP0U7xnc&callback=initMap" async defer></script> -->
+<!-- <script src="https://www.googleapis.com/geolocation/v1/geolocate?key=AIzaSyBGgA9HqC9KjPlL1JvuZ_5sKyGQP0U7xnc" ></script> -->
+
+</head>
+<body>
+    <button type="button" onclick="callmsg();">Show My Position on Google Map</button>
+	 <div id="result">
+        <!--Position information will be inserted here-->
+    </div> 
+	<br/> 
+	<div id="loge">
+        <!--Position information will be inserted here-->
+    </div> 
+	<br/>
+	<!-- <div id="map"></div> -->
+</body>
+</html>                            
